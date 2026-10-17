@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b1221" />
+  <meta name="description" content="用互動方式探索 OCT 深度影像與 A-scan 反射訊號。教育用途簡化概念模擬。" />
+  <title>看不見的深度｜OCT 光學影像互動實驗室</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0b1221;--panel:#141f31;--panel2:#1a2940;--line:#2a3b53;--text:#edf5fb;--muted:#a7b8c9;--cyan:#48e2d0;--sky:#72b9ff;--amber:#ffc780;--radius:20px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 85% 2%,#153349 0,transparent 40%),radial-gradient(ellipse at 0% 40%,#122238 0,transparent 43%),var(--bg);font-family:Inter,-apple-system,BlinkMacSystemFont,"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--text);line-height:1.55}
+    button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid var(--sky);outline-offset:3px}button:disabled{opacity:.5;cursor:not-allowed}.container{width:min(1330px,calc(100% - 52px));margin:0 auto}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:29px 0 22px}.brand{display:flex;align-items:center;gap:14px}.logo{display:grid;place-items:center;width:43px;height:43px;border-radius:13px;border:1px solid #3b6d78;background:#13333b;color:var(--cyan);font-size:24px;font-weight:800}.brand b{display:block;font-size:17px;letter-spacing:.04em}.brand small{color:var(--muted);font-size:11px;letter-spacing:.15em}.top-status{display:flex;align-items:center;gap:9px;font-size:12px;color:#c8e5e4;border:1px solid #2d5b60;padding:8px 14px;border-radius:30px;background:#123039}.dot{height:7px;width:7px;background:var(--cyan);box-shadow:0 0 12px var(--cyan);border-radius:50%}
+    .hero{padding:25px 0 30px;display:flex;align-items:end;justify-content:space-between;gap:18px}.eyebrow{text-transform:uppercase;font-size:11px;letter-spacing:.22em;color:var(--cyan);font-weight:800}.hero h1{font-size:clamp(29px,3.5vw,49px);line-height:1.2;letter-spacing:-.045em;margin:11px 0 12px}.hero h1 span{color:var(--cyan)}.hero p{font-size:14px;color:var(--muted);max-width:770px;margin:0}.hero-actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:11px;padding:11px 15px;font-size:13px;font-weight:750;min-height:42px;border:1px solid #486079;color:#e6f4ff;background:#1b3047;transition:.16s transform,.16s background}.btn:hover{background:#294058;transform:translateY(-1px)}.btn.primary{background:var(--cyan);border-color:var(--cyan);color:#082029}.btn.primary:hover{background:#8af6e6}.btn.flat{background:transparent;border-color:#33475d}.btn.small{padding:7px 11px;min-height:34px;font-size:12px}
+    .dashboard{display:grid;grid-template-columns:325px minmax(0,1fr);gap:18px;align-items:start}.sidebar,.workspace{min-width:0}.panel{background:linear-gradient(160deg,#172338,#111b2c);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 16px 38px #02091340;overflow:hidden}.panel + .panel{margin-top:16px}.pad{padding:19px 19px 21px}.section-heading{font-size:14px;font-weight:800;margin:0 0 5px;display:flex;gap:8px;align-items:center}.section-sub{font-size:11px;line-height:1.55;color:var(--muted);margin:0 0 16px}.overline{font-size:10px;color:var(--cyan);font-weight:800;letter-spacing:.15em;margin:0 0 11px}.scenarios{display:grid;gap:9px}.scenario{width:100%;display:flex;gap:11px;text-align:left;align-items:center;border:1px solid #32465f;border-radius:12px;background:#17273a;padding:11px;color:var(--text)}.scenario:hover{border-color:#527d88}.scenario.active{background:#183b42;border-color:var(--cyan);box-shadow:inset 0 0 0 1px #48e2d020}.scene-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:10px;color:var(--cyan);background:#244252;font-size:18px;flex-shrink:0}.scene-label b{font-size:12px;display:block}.scene-label small{color:var(--muted);font-size:10px;display:block;margin-top:2px}
+    .control{padding:12px 0 14px;border-bottom:1px solid #29384c}.control:last-of-type{border-bottom:0}.control-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:12px;font-weight:750}.control-head output{font-size:12px;color:var(--cyan);font-weight:900;font-variant-numeric:tabular-nums}.control small{color:var(--muted);font-size:10px;display:block;margin-top:8px}.control input[type=range]{appearance:none;width:100%;height:5px;background:linear-gradient(to right,var(--cyan) var(--fill,50%),#3a4c62 var(--fill,50%));border-radius:10px;margin:17px 0 0;cursor:pointer}.control input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;background:#d6fff9;border:3px solid var(--cyan);border-radius:50%;box-shadow:0 0 0 3px #48e2d027}.control input[type=range]::-moz-range-thumb{width:11px;height:11px;background:#d6fff9;border:3px solid var(--cyan);border-radius:50%}.actions-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:16px}.actions-row button{padding-left:6px;padding-right:6px}.note{border:1px solid #314858;background:#122a35;padding:12px 14px;border-radius:12px;color:#b6dadc;font-size:11px;line-height:1.65}
+    .viz-card{padding:0}.viz-top{padding:20px 20px 12px;display:flex;justify-content:space-between;gap:12px;align-items:start;flex-wrap:wrap}.viz-top h2,.secondary-card h2{font-size:17px;margin:3px 0}.viz-top p,.secondary-card p{font-size:11px;color:var(--muted);margin:3px 0 0}.tag{font-size:10px;border:1px solid #44606a;background:#1a3940;color:#c7efea;border-radius:6px;padding:4px 7px;display:inline-block}.viz-tools{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.canvas-wrap{padding:0 14px 12px;position:relative}.canvas-frame{border-radius:13px;overflow:hidden;border:1px solid #243951;background:#081321}canvas{display:block;width:100%;height:auto}#bscan{cursor:crosshair;touch-action:pan-y}#ascan{cursor:default}.viz-footer{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;border-top:1px solid #283a50;padding:11px 20px 16px;font-size:11px;color:var(--muted)}.legend{display:flex;align-items:center;gap:14px;flex-wrap:wrap}.legend i{display:inline-block;height:3px;width:18px;vertical-align:middle;margin-right:5px;border-radius:4px}.legend .l1{background:#eee}.legend .l2{background:var(--cyan)}
+    .lower{display:grid;grid-template-columns:minmax(0,1fr) minmax(290px,.88fr);gap:16px;margin-top:16px}.secondary-card{padding:19px 19px 14px;min-width:0}.ascan-caption{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.ascan-caption strong{color:var(--cyan)}.readout{margin-top:11px;border-top:1px solid #2a3b53;padding-top:11px;color:#b8c7d8;font-size:11px;line-height:1.75}.mission{position:relative;min-height:100%}.mission h2{margin-top:7px}.mission-label{font-size:10px;letter-spacing:.15em;color:var(--amber);font-weight:900}.mission p{font-size:12px;line-height:1.85;margin:11px 0;color:#bfcfe0}.mission b{color:#fff}.mission .progress{height:6px;border-radius:10px;background:#364456;overflow:hidden;margin:14px 0}.mission .progress span{display:block;background:linear-gradient(90deg,var(--amber),var(--cyan));width:0;height:100%;transition:width .25s}.mission .task-status{border:1px solid #3d5166;border-radius:11px;padding:11px 12px;font-size:12px;color:#c7d7e6;min-height:45px}.mission .task-status.done{border-color:#398b83;background:#123936;color:#9affdc}.mission .btn{margin-top:14px}
+    .compare-card{margin-top:16px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;align-items:center}.compare-card h2{font-size:16px;margin:0 0 6px}.compare-card p{font-size:12px;color:var(--muted);line-height:1.75;margin:0 0 12px}.compare-preview{border:1px dashed #3b546a;border-radius:13px;background:#0e1928;overflow:hidden;position:relative;min-height:130px;display:grid;place-items:center}.compare-preview canvas{width:100%;display:none}.compare-preview span{font-size:12px;color:#7d94aa;text-align:center;padding:14px}.compare-meta{font-size:10px;color:#a7bdce;margin-top:7px}.how-it-works{padding:40px 0 25px}.how-it-works h2{font-size:19px;margin:0 0 16px}.explainer{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.info-card{border:1px solid #2b4058;border-radius:15px;background:#132237;padding:15px 17px}.info-card .num{font-size:11px;color:var(--cyan);font-weight:900;letter-spacing:.12em}.info-card strong{display:block;font-size:14px;margin:8px 0}.info-card p{color:var(--muted);font-size:11px;line-height:1.75;margin:0}.footer{border-top:1px solid #25364b;padding:22px 0 36px;display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;color:#8fa4b9;font-size:11px}.footer strong{color:#b4e6e5}
+    @media(max-width:1000px){.dashboard{grid-template-columns:285px minmax(0,1fr)}.lower{grid-template-columns:1fr}.hero{align-items:start;flex-direction:column}.hero-actions{justify-content:flex-start}}@media(max-width:740px){.container{width:calc(100% - 28px)}.topbar{padding-top:17px}.brand small{font-size:9px}.top-status{font-size:10px;padding:7px 9px}.hero{padding:15px 0 23px}.dashboard{grid-template-columns:1fr}.scenarios{grid-template-columns:repeat(3,1fr)}.scenario{flex-direction:column;text-align:center;padding:9px 5px}.scene-label small{font-size:9px}.scene-icon{width:32px;height:32px}.pad{padding:15px}.control{padding:8px 0 11px}.viz-top{padding:16px}.canvas-wrap{padding:0 7px 9px}.viz-footer{padding:10px 14px 14px}.explainer{grid-template-columns:1fr}.compare-card{grid-template-columns:1fr}.footer{flex-direction:column;align-items:flex-start}.hero h1{font-size:30px}}
+
+    .upload-lab{margin:25px 0 0}.upload-heading{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:13px}.upload-heading h2{margin:5px 0;font-size:24px}.upload-heading p{color:var(--muted);font-size:12px;margin:0;max-width:790px}.upload-grid{display:grid;grid-template-columns:308px minmax(0,1fr);gap:16px}.upload-drop{border:1.5px dashed #507d93;background:#112b3c;border-radius:14px;padding:20px 12px;display:grid;justify-items:center;gap:8px;text-align:center;cursor:pointer;transition:background .2s,border-color .2s}.upload-drop:hover,.upload-drop.is-drag{border-color:var(--cyan);background:#164553}.upload-drop .up-icon{font-size:27px;color:var(--cyan)}.upload-drop b{font-size:13px}.upload-drop small{font-size:10px;color:var(--muted)}.upload-file-input{position:absolute;left:-99999px;width:1px;height:1px}.upload-drop:focus-visible{outline:3px solid var(--sky);outline-offset:3px}.upload-meta{font-size:11px;color:#a5cbdf;line-height:1.7;margin:12px 0 8px;overflow-wrap:anywhere}.upload-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.upload-fieldset{border:0;padding:0;margin:10px 0 0}.upload-fieldset:disabled{opacity:.45}.upload-fieldset .control{padding:8px 0 12px}.upload-toggle{display:flex;gap:9px;align-items:center;padding:13px 0;font-size:12px;cursor:pointer}.upload-toggle input{accent-color:#48e2d0;width:16px;height:16px}.upload-panel{padding:17px}.upload-preview-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.upload-preview{min-width:0}.upload-preview .preview-title{display:flex;justify-content:space-between;align-items:center;color:#d6e3f4;font-size:12px;font-weight:800;margin:0 0 8px}.upload-preview .preview-title small{color:#8ec9c5;font-size:10px;font-weight:600}.upload-preview canvas{aspect-ratio:520/300;background:#081321;border-radius:12px;border:1px solid #2d4058}.upload-preview #uplProcessed{cursor:crosshair;touch-action:pan-y}.upload-profile-wrap{margin-top:15px;display:grid;grid-template-columns:1fr minmax(0,1.25fr);gap:13px;align-items:center}.upload-profile-info{font-size:12px;color:#b5c9d7;line-height:1.75}.upload-profile-info b{color:#48e2d0}.upload-profile-canvas{background:#081321;border-radius:12px;border:1px solid #2d4058}.upload-caution{font-size:11px;line-height:1.65;color:#a6bccd;margin:12px 0 0}.upload-hint{font-size:10px;color:#8cb1c5;margin-top:8px}
+    @media(max-width:900px){.upload-grid{grid-template-columns:1fr}.upload-profile-wrap{grid-template-columns:1fr}}@media(max-width:520px){.upload-preview-grid{grid-template-columns:1fr}.upload-actions{grid-template-columns:1fr}}
+
+    /* V3: focused upload tools. Only one mode is visible at a time. */
+    .upload-quickstart{display:flex;justify-content:center;margin:10px 0 3px}.upload-quickstart .btn{width:100%}
+    .upload-tools{display:flex;gap:7px;padding:5px;background:#0d1b2b;border:1px solid #2b4157;border-radius:12px;margin-bottom:15px;flex-wrap:wrap}
+    .upload-tools .tool-tab{flex:1 1 130px;padding:9px 8px;min-height:40px;border:1px solid transparent;border-radius:9px;color:#a9bfce;font-size:12px;font-weight:750;background:transparent}
+    .upload-tools .tool-tab:hover:not(:disabled){background:#203348;color:#eef9ff}
+    .upload-tools .tool-tab[aria-pressed="true"]{background:#1d4950;color:#b1fff2;border-color:#357d7f}
+    .upload-tools .tool-tab:disabled{opacity:.38;cursor:not-allowed}
+    .upload-pane[hidden]{display:none!important}
+    .mode-hint{color:#acc2d5;font-size:11px;line-height:1.7;margin:3px 0 12px}
+    .wide-image-canvas{aspect-ratio:820/410;background:#071321;border-radius:12px;border:1px solid #2b4157;width:100%;height:auto}
+    #uplComparison{cursor:ew-resize;touch-action:none}
+    #uplRoiCanvas{cursor:crosshair;touch-action:none}
+    .roi-topline{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:9px}
+    .roi-topline .btn{min-height:34px}
+    .roi-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0}
+    .roi-stat{background:#0f2534;border:1px solid #2f495d;padding:12px;border-radius:11px;min-width:0}
+    .roi-stat small{display:block;color:#9bb7ca;font-size:10px}.roi-stat strong{display:block;color:#6df2df;font-size:18px;font-weight:800;margin-top:3px;overflow-wrap:anywhere}
+    .hist-title{font-size:12px;font-weight:800;color:#d6e5ef;margin:15px 0 7px}
+    .hist-canvas{width:100%;max-height:245px;background:#071321;border:1px solid #2b4157;border-radius:12px}
+    .roi-meta{font-size:11px;color:#acc2d2;line-height:1.7;margin-top:8px}
+    @media(max-width:600px){.roi-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.upload-tools .tool-tab{flex-basis:95px;font-size:11px;padding:8px 5px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="topbar">
+      <div class="brand"><span class="logo" aria-hidden="true">◎</span><span><b>OCT Visual Lab</b><small>INTERACTIVE IMAGING STUDIO</small></span></div>
+      <div class="top-status"><span class="dot" aria-hidden="true"></span> 100% 瀏覽器運算 · 上傳圖片僅在本機處理</div>
+    </header>
+    <section class="hero">
+      <div><div class="eyebrow">EXPLORE THE INVISIBLE</div><h1>看不見的深度，<span>親手調出來。</span></h1><p>調整解析度、雜訊與對比度，探索簡化的 OCT 深度訊號如何形成灰階剖面圖。試著在模擬組織裡，找到那條容易被模糊掉的薄層界面。</p></div>
+      <div class="hero-actions"><button class="btn primary" id="heroMission">開始薄層挑戰 ↗</button><button class="btn flat" id="heroIntro">了解原理 ↓</button><button class="btn flat" id="heroUpload">自己上傳圖片 ↓</button></div>
+    </section>
+    <main class="dashboard" id="lab">
+      <aside class="sidebar">
+        <section class="panel pad" aria-labelledby="scene-title"><div class="overline">01 / SAMPLE LIBRARY</div><h2 id="scene-title" class="section-heading">選擇模擬樣本</h2><p class="section-sub">不同組織界面以合成反射峰表示。</p>
+          <div class="scenarios" role="group" aria-label="樣本情境">
+            <button type="button" class="scenario active" data-preset="layers" aria-pressed="true"><span class="scene-icon" aria-hidden="true">≋</span><span class="scene-label"><b>一般分層</b><small>清楚的三個界面</small></span></button>
+            <button type="button" class="scenario" data-preset="thin" aria-pressed="false"><span class="scene-icon" aria-hidden="true">◫</span><span class="scene-label"><b>相近薄層</b><small>兩個很靠近的界面</small></span></button>
+            <button type="button" class="scenario" data-preset="weak" aria-pressed="false"><span class="scene-icon" aria-hidden="true">⋯</span><span class="scene-label"><b>低訊號樣本</b><small>較弱的反射結構</small></span></button>
+          </div>
+        </section>
+        <section class="panel pad" aria-labelledby="params-title"><div class="overline">02 / IMAGE PARAMETERS</div><h2 id="params-title" class="section-heading">影像參數</h2><p class="section-sub">拖動滑桿，右邊立即顯示影像變化。</p>
+          <div class="control"><div class="control-head"><label for="resolution">軸向解析度（示意 FWHM）</label><output id="resolutionVal">95 µm</output></div><input id="resolution" type="range" min="25" max="200" step="5" value="95"/><small>數值越小，深度方向的界面越容易分開。</small></div>
+          <div class="control"><div class="control-head"><label for="noise">雜訊程度</label><output id="noiseVal">24 / 85</output></div><input id="noise" type="range" min="0" max="85" step="1" value="24"/><small>越高越容易被背景顆粒干擾。</small></div>
+          <div class="control"><div class="control-head"><label for="contrast">反射訊號對比度</label><output id="contrastVal">105%</output></div><input id="contrast" type="range" min="40" max="160" step="5" value="105"/><small>增減模擬界面的可見程度。</small></div>
+          <div class="control"><div class="control-head"><label for="depth">顯示深度範圍</label><output id="depthVal">3.0 mm</output></div><input id="depth" type="range" min="1.8" max="4" step="0.1" value="3"/><small>改變顯示視窗，不代表真實穿透能力。</small></div>
+          <div class="actions-row"><button class="btn flat" id="resetBtn">↺ 重設設定</button><button class="btn" id="captureBtn">▣ 保存對照</button></div>
+        </section>
+        <section class="panel pad"><div class="overline">IMPORTANT / PLEASE READ</div><div class="note">本網站以簡化反射強度與模糊模型產生<strong>合成影像</strong>，方便理解 A-scan 與 B-scan。不是 OCT 儀器模擬器、真實量測資料，也不可用於醫療診斷。</div></section>
+      </aside>
+      <div class="workspace">
+        <section class="panel viz-card" aria-labelledby="b-title"><div class="viz-top"><div><span class="tag">LIVE SIMULATION</span><h2 id="b-title">B-scan · 深度剖面影像</h2><p>橫軸：掃描位置｜縱軸：相對深度（mm）</p></div><div class="viz-tools"><button class="btn small" id="playBtn" aria-pressed="false">▶ 自動掃描</button><button class="btn small" id="exportBtn">↓ 下載 PNG</button></div></div>
+          <div class="canvas-wrap"><div class="canvas-frame"><canvas id="bscan" width="820" height="385" role="img" aria-label="可點擊的模擬 OCT B-scan 灰階影像，點擊不同橫向位置將改變 A-scan" tabindex="0"></canvas></div></div>
+          <div class="viz-footer"><div class="legend"><span><i class="l1"></i> 合成反射界面</span><span><i class="l2"></i> A-scan 選取線</span></div><span id="positionLabel">掃描位置：50%</span></div>
+        </section>
+        <div class="lower">
+          <section class="panel secondary-card" aria-labelledby="a-title"><div class="ascan-caption"><div><div class="overline">03 / DEPTH PROFILE</div><h2 id="a-title">A-scan · 單點深度訊號</h2></div><span class="tag">SYNCHRONIZED</span></div><p>點選上方 B-scan 的任意位置，觀察這條線的反射強度。</p><div class="canvas-frame" style="margin-top:12px"><canvas id="ascan" width="520" height="330" role="img" aria-label="A-scan 單點深度反射強度曲線"></canvas></div><div class="readout" id="reading" aria-live="polite">目前顯示一般分層樣本。</div></section>
+          <section class="panel secondary-card mission" aria-labelledby="mission-title"><div class="mission-label">◈ INTERACTIVE MISSION</div><h2 id="mission-title">任務：找回消失的薄層</h2><p>有兩個深度非常接近的反射界面，在解析度較差、雜訊較強時，訊號可能重疊、難以分辨。<br/><b>你的目標：</b>透過調整參數，讓兩個界面更容易分開。</p><div class="progress" aria-hidden="true"><span id="missionProgress"></span></div><div class="task-status" id="missionStatus" aria-live="polite">按下「載入挑戰」開始實驗。</div><button class="btn primary" id="missionBtn">載入挑戰 →</button></section>
+        </div>
+        <section class="panel secondary-card compare-card" aria-labelledby="compare-title"><div><div class="overline">04 / BEFORE & AFTER</div><h2 id="compare-title">保存一個基準，再來比較</h2><p>先按左側「保存對照」，再調整解析度或雜訊。你可以留下修改前的影像，用肉眼比較兩種設定差在哪裡。</p><div class="compare-meta" id="compareMeta">尚未保存基準影像</div></div><div class="compare-preview"><span id="compareEmpty">目前沒有對照圖<br/>請按左側「保存對照」</span><canvas id="baseline" width="820" height="385" role="img" aria-label="先前保存的模擬 B-scan 影像"></canvas></div></section>
+      </div>
+    </main>
+
+    <section class="upload-lab" id="uploadLab" aria-labelledby="uploadTitle">
+      <div class="upload-heading"><div><div class="eyebrow">05 / YOUR OWN IMAGE LAB</div><h2 id="uploadTitle">帶一張自己的圖片，親手觀察像素變化。</h2><p>可上傳自己的 PNG / JPG / WebP 調整灰階、亮度與平滑，並切換「並排分析／滑動比較／ROI 統計」，直接探索影像中的局部特徵。</p></div><span class="tag">本機處理 / 不傳伺服器</span></div>
+      <div class="upload-grid">
+        <aside class="panel pad">
+          <div class="overline">LOCAL IMAGE INPUT</div>
+          <input class="upload-file-input" type="file" id="uplFile" accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp" aria-label="選擇要分析的圖片" />
+          <div id="uplDrop" class="upload-drop" tabindex="0" role="button" aria-label="按 Enter 或空白鍵選擇圖片，也可以將圖片拖曳至此">
+            <span class="up-icon" aria-hidden="true">↥</span><b>點這裡選擇圖片，或拖曳到這裡</b><small>PNG / JPG / WebP，最大 12 MB</small><span class="btn small primary" aria-hidden="true">選擇本機圖片</span>
+          </div>
+          <div class="upload-quickstart"><button type="button" class="btn small flat" id="uplDemo">✦ 沒有圖片？載入示範影像</button></div>
+          <div id="uplMessage" class="upload-meta" role="status" aria-live="polite">尚未上傳圖片。所有分析都只在目前瀏覽器中執行。</div>
+          <fieldset id="uplSettings" class="upload-fieldset" disabled>
+            <div class="control"><div class="control-head"><label for="uplContrast">對比度</label><output id="uplContrastVal">100%</output></div><input id="uplContrast" type="range" min="40" max="220" step="5" value="100" /><small>拉大亮暗差異，觀察弱訊號的視覺效果。</small></div>
+            <div class="control"><div class="control-head"><label for="uplBrightness">亮度</label><output id="uplBrightnessVal">0</output></div><input id="uplBrightness" type="range" min="-80" max="80" step="5" value="0" /></div>
+            <div class="control"><div class="control-head"><label for="uplSmooth">平滑程度</label><output id="uplSmoothVal">0</output></div><input id="uplSmooth" type="range" min="0" max="4" step="1" value="0" /><small>使用簡化的平均模糊，過度平滑可能犧牲細節。</small></div>
+            <label class="upload-toggle"><input id="uplInvert" type="checkbox" /> 反轉灰階（黑白互換）</label>
+          </fieldset>
+          <div class="upload-actions"><button type="button" class="btn flat" id="uplClear">清除圖片</button><button type="button" class="btn" id="uplDownload" disabled>↓ 匯出處理後 PNG</button></div>
+          <div class="upload-hint">想使用 OCT 圖片？請先從儀器或分析軟體匯出 PNG / JPG；此工具不直接解析 .mat 或原始干涉訊號。</div>
+        </aside>
+        <div class="panel upload-panel">
+          <div class="upload-tools" role="group" aria-label="圖片分析工具">
+            <button type="button" class="tool-tab" data-mode="side" aria-pressed="true">▦ 並排分析</button>
+            <button type="button" class="tool-tab" data-mode="compare" aria-pressed="false" disabled>⇆ 滑動比較</button>
+            <button type="button" class="tool-tab" data-mode="roi" aria-pressed="false" disabled>▣ ROI 統計</button>
+          </div>
+          <div class="upload-pane" id="uplPaneSide">
+          <div class="upload-preview-grid">
+            <div class="upload-preview"><div class="preview-title">原始圖片 <small>ORIGINAL</small></div><canvas id="uplOriginal" width="520" height="300" role="img" aria-label="上傳後顯示原始圖片"></canvas></div>
+            <div class="upload-preview"><div class="preview-title">處理後影像 <small>PROCESSED / CLICK TO SAMPLE</small></div><canvas id="uplProcessed" width="520" height="300" role="img" tabindex="0" aria-label="處理後的灰階圖片，點選橫向位置可更新強度曲線"></canvas></div>
+          </div>
+          <div class="upload-profile-wrap"><div class="upload-profile-info"><div class="overline">PIXEL INTENSITY PROFILE</div><b>選一條垂直掃描線，讀取灰階強度</b><div id="uplProfileText" aria-live="polite">上傳圖片後，點選右上方的處理後影像，即可查看該位置由上到下的像素強度曲線。</div></div><canvas class="upload-profile-canvas" id="uplProfile" width="560" height="220" role="img" aria-label="所選垂直位置的灰階強度曲線"></canvas></div>
+          </div>
+          <div class="upload-pane" id="uplPaneCompare" hidden>
+            <p class="mode-hint">在圖片上左右拖曳分界線：左側顯示原圖，右側顯示處理後影像。調整左邊參數即可即時看出差異。</p>
+            <canvas class="wide-image-canvas" id="uplComparison" width="820" height="410" role="img" tabindex="0" aria-label="可拖曳原始圖片與處理後圖片之間的比較分界線；也可按左右方向鍵移動"></canvas>
+            <div class="roi-meta" id="uplCompareNote">分界線位置：50%｜支援滑鼠、觸控及方向鍵。</div>
+          </div>
+          <div class="upload-pane" id="uplPaneRoi" hidden>
+            <div class="roi-topline"><p class="mode-hint" style="margin:0;flex:1">在影像上按住並拖曳，框選 ROI（感興趣區域）。數值皆根據「處理後」的灰階像素計算。</p><button type="button" class="btn flat small" id="uplRoiClear">分析全圖</button></div>
+            <canvas class="wide-image-canvas" id="uplRoiCanvas" width="820" height="410" role="img" tabindex="0" aria-label="拖曳選取感興趣區域（ROI），可按 Enter 回復全圖分析"></canvas>
+            <div class="roi-stats" aria-live="polite">
+              <div class="roi-stat"><small>平均灰階 / MEAN</small><strong id="uplMean">--</strong></div>
+              <div class="roi-stat"><small>標準差 / STD</small><strong id="uplStd">--</strong></div>
+              <div class="roi-stat"><small>最小 / 最大</small><strong id="uplMinMax">--</strong></div>
+              <div class="roi-stat"><small>像素數 / COUNT</small><strong id="uplCount">--</strong></div>
+            </div>
+            <div class="hist-title">灰階直方圖（0–255）</div>
+            <canvas class="hist-canvas" id="uplHist" width="820" height="220" role="img" aria-label="感興趣區域灰階值的分布直方圖"></canvas>
+            <p class="roi-meta" id="uplRoiNote" aria-live="polite">尚未載入影像。上傳後可框選局部，或分析全圖。</p>
+          </div>
+          <p class="upload-caution">注意：這是影像像素的灰階強度分析，不會將一般照片轉換成 OCT 深度影像。即使上傳的是 OCT B-scan 截圖，所得到的也只是像素強度剖面，不等同儀器量測的校正 A-scan 或實際深度。</p>
+        </div>
+      </div>
+    </section>
+    <section class="how-it-works" id="intro"><div class="eyebrow">HOW IT WORKS</div><h2>從一條反射訊號，到一張深度影像</h2><div class="explainer"><article class="info-card"><div class="num">01 / LIGHT RETURNS</div><strong>不同深度產生反射</strong><p>模型將組織界面簡化成不同深度與強度的反射峰；真實 OCT 的成像機制還包含低同調干涉、光路與訊號處理。</p></article><article class="info-card"><div class="num">02 / A-SCAN</div><strong>先看單點深度分布</strong><p>固定一個橫向位置，將各深度反射強度畫成曲線。當相近反射峰受模糊影響，曲線可能合併。</p></article><article class="info-card"><div class="num">03 / B-SCAN</div><strong>橫向排列得到剖面</strong><p>把多個橫向位置的 A-scan 排在一起，便能得到概念性的二維深度剖面影像。</p></article></div></section>
+    <footer class="footer"><span><strong>OCT Visual Lab</strong>　·　Vibe Coding 課程互動作品</span><span>教育用途 · 合成影像 · 完全本機運作 · Single-file HTML</span></footer>
+  </div>
+  <script>
+    (() => {
+      'use strict';
+      const bCanvas = document.getElementById('bscan');
+      const aCanvas = document.getElementById('ascan');
+      const bctx = bCanvas.getContext('2d');
+      const actx = aCanvas.getContext('2d');
+      const baselineCanvas = document.getElementById('baseline');
+      const baselineContext = baselineCanvas.getContext('2d');
+      const temp = document.createElement('canvas');
+      const cfg = {left:58,top:27,right:21,bottom:52};
+      const PW = bCanvas.width - cfg.left - cfg.right;
+      const PH = bCanvas.height - cfg.top - cfg.bottom;
+      temp.width = PW; temp.height = PH;
+      const raster = temp.getContext('2d', {willReadFrequently: false});
+      const TAU = Math.PI*2;
+      const presetDefs = {
+        layers: {label:'一般分層', reflectors:[{z:.47,a:.94,w:.025,p:.3},{z:1.24,a:.80,w:.055,p:1.7},{z:2.27,a:.64,w:.082,p:2.4}], noiseFactor:1},
+        thin: {label:'相近薄層', reflectors:[{z:.51,a:.82,w:.035,p:.4},{z:1.31,a:.82,w:.027,p:1.4},{z:1.43,a:.78,w:.024,p:1.4},{z:2.28,a:.46,w:.06,p:3.1}], noiseFactor:1},
+        weak: {label:'低訊號樣本', reflectors:[{z:.61,a:.57,w:.06,p:.5},{z:1.28,a:.43,w:.075,p:2.2},{z:2.12,a:.27,w:.07,p:1.1}], noiseFactor:1.35}
+      };
+      const defaults = {preset:'layers',resolution:95,noise:24,contrast:105,depth:3,xpos:.5};
+      let s = {...defaults}; let mission = false; let playing=false; let raf=0; let lastFrame=0; let renderQueued=false; let baselineSaved=false;
+      const els = {};
+      for(const name of ['resolution','noise','contrast','depth']) els[name] = document.getElementById(name);
+      const clamp = (n,min,max) => Math.max(min, Math.min(max,n));
+      function hash(x,y){let t=Math.imul(x+101,374761393)+Math.imul(y+17,668265263);t=Math.imul(t^(t>>>13),1274126177);return ((t^(t>>>16))>>>0)/4294967295;}
+      function depthAt(refl,x){return refl.z+refl.w*Math.sin(TAU*(x*1.07)+refl.p)+.008*Math.sin(x*TAU*5.1+refl.p*2);}
+      function amplitude(z,x,xi,yi){
+        const def=presetDefs[s.preset]; const sigma=s.resolution/1000/2.355; const grain=hash(xi,yi);const contrast=s.contrast/100;
+        let v=7 + (s.noise/85)*64*(grain*.85 + hash(xi*3+7,yi*5+11)*.15)*def.noiseFactor;
+        v += 5*hash(xi+22, yi+91);
+        for(const refl of def.reflectors){
+          const delta=(z-depthAt(refl,x))/sigma;
+          if(Math.abs(delta)<5.5){
+            const speckle=.73+.27*Math.sin(27*x + refl.p*4)+.11*(hash(xi,Math.round(refl.z*100))-0.5);
+            v += 215*refl.a*Math.exp(-.5*delta*delta)*contrast*speckle*Math.exp(-z*.17);
+          }
+        }
+        return clamp(v,0,255);
+      }
+      function drawRaster(){
+        const image = raster.createImageData(PW,PH);let idx=0;
+        for(let y=0;y<PH;y++){
+          const z=(y+.5)/PH*s.depth;
+          for(let x=0;x<PW;x++){
+            const xf=x/(PW-1);
+            const val=amplitude(z,xf,x,y);
+            image.data[idx++]=val;
+            image.data[idx++]=val;
+            image.data[idx++]=val;
+            image.data[idx++]=255;
+          }
+        }
+        raster.putImageData(image,0,0);
+      }
+      function borderBackground(ctx,w,h){ctx.clearRect(0,0,w,h);ctx.fillStyle='#07111f';ctx.fillRect(0,0,w,h);}
+      function drawB(){
+        borderBackground(bctx,bCanvas.width,bCanvas.height);
+        bctx.drawImage(temp,cfg.left,cfg.top);
+        bctx.strokeStyle='#40536a';bctx.lineWidth=1;bctx.strokeRect(cfg.left+.5,cfg.top+.5,PW,PH);
+        bctx.textBaseline='middle';bctx.font='12px system-ui, sans-serif';bctx.fillStyle='#a1b4c9';
+        for(let j=0;j<=4;j++){
+          const z=j*s.depth/4, y=cfg.top+j*PH;
+          bctx.strokeStyle='#ffffff20';bctx.beginPath();bctx.moveTo(cfg.left,y);bctx.lineTo(cfg.left+PW,y);bctx.stroke();
+          bctx.textAlign='right';bctx.fillText(z.toFixed(1),cfg.left-9,y);
+        }
+        for(let j=0;j<=4;j++){
+          const x=cfg.left+j*PW/4;
+          bctx.strokeStyle='#ffffff18';bctx.beginPath();bctx.moveTo(x,cfg.top);bctx.lineTo(x,cfg.top+PH);bctx.stroke();
+          bctx.textAlign='center';bctx.fillText(`${j*25}%`,x,cfg.top+PH+19);
+        }
+        bctx.save();bctx.translate(16,cfg.top+PH/2);bctx.rotate(-Math.PI/2);bctx.textAlign='center';bctx.fillText('相對深度 (mm)',0,0);bctx.restore();
+        bctx.fillStyle='#c0d3e4';bctx.textAlign='left';bctx.fillText('合成灰階強度 / a.u.',cfg.left,cfg.top-13);
+        const sx=cfg.left+PW*s.xpos;
+        bctx.lineWidth=1.5;bctx.strokeStyle='#48e2d0';bctx.shadowColor='#48e2d0';bctx.shadowBlur=9;
+        bctx.beginPath();bctx.moveTo(sx,cfg.top);bctx.lineTo(sx,cfg.top+PH);bctx.stroke();bctx.shadowBlur=0;
+        bctx.fillStyle='#48e2d0';bctx.beginPath();bctx.moveTo(sx-5,cfg.top+PH+3);bctx.lineTo(sx+5,cfg.top+PH+3);bctx.lineTo(sx,cfg.top+PH+12);bctx.fill();
+        document.getElementById('positionLabel').textContent=`掃描位置：${Math.round(s.xpos*100)}%`;
+      }
+      function drawA(){
+        const W=aCanvas.width,H=aCanvas.height;const plot={left:61,top:26,right:24,bottom:43};const cw=W-plot.left-plot.right,ch=H-plot.top-plot.bottom;
+        borderBackground(actx,W,H);actx.font='12px system-ui,sans-serif';actx.textBaseline='middle';
+        for(let j=0;j<=4;j++){
+          const yy=plot.top+(j/4)*ch;
+          actx.beginPath();actx.strokeStyle='#2e465d';actx.moveTo(plot.left,yy);actx.lineTo(plot.left+cw,yy);actx.stroke();
+          actx.fillStyle='#96afc5';actx.textAlign='right';actx.fillText((j/4*s.depth).toFixed(1),plot.left-10,yy);
+        }
+        for(let j=0;j<=4;j++){
+          const xx=plot.left+(j/4)*cw;
+          actx.beginPath();actx.strokeStyle='#22384c';actx.moveTo(xx,plot.top);actx.lineTo(xx,plot.top+ch);actx.stroke();
+          actx.textAlign='center';actx.fillStyle='#96afc5';actx.fillText((j*.25).toFixed(2),xx,plot.top+ch+18);
+        }
+        actx.save();actx.translate(19,plot.top+ch/2);actx.rotate(-Math.PI/2);actx.textAlign='center';actx.fillStyle='#96afc5';actx.fillText('深度 (mm)',0,0);actx.restore();
+        actx.textAlign='center';actx.fillText('正規化顯示強度 (a.u.)',plot.left+cw/2,H-12);
+        actx.beginPath();
+        const xi=Math.round(s.xpos*(PW-1));
+        for(let y=0;y<=ch;y++){
+          const z=y/ch*s.depth;const yi=Math.min(PH-1,Math.round(y/ch*PH));
+          const a=amplitude(z,s.xpos,xi,yi)/255;
+          const xx=plot.left+a*cw,yy=plot.top+y;
+          if(y===0)actx.moveTo(xx,yy);else actx.lineTo(xx,yy);
+        }
+        actx.strokeStyle='#4ae6d4';actx.lineWidth=2;actx.shadowColor='#1bc6b6';actx.shadowBlur=6;actx.stroke();actx.shadowBlur=0;
+        actx.fillStyle='#d2e3ee';actx.textAlign='left';actx.font='11px system-ui,sans-serif';actx.fillText(`橫向位置：${Math.round(s.xpos*100)}%`,plot.left+8,14);
+      }
+      function updateReadout(){
+        const name=presetDefs[s.preset].label;
+        let desc=s.resolution>=135?'軸向反射峰較寬，鄰近界面可能重疊。':s.resolution<=60?'軸向反射峰較窄，分辨相近界面較有利。':'目前解析度設定介於兩者之間。';
+        if(s.noise>=50)desc+=' 雜訊偏高，弱界面較難辨識。'; else if(s.noise<=20)desc+=' 雜訊較低，背景干擾較少。';
+        document.getElementById('reading').textContent=`樣本：${name}。${desc}（此判讀僅對應本站概念模型。）`;
+      }
+      function syncControls(){
+        for(const k of ['resolution','noise','contrast','depth']){
+          els[k].value=s[k];const ratio=(s[k]-Number(els[k].min))/(Number(els[k].max)-Number(els[k].min));els[k].style.setProperty('--fill',`${ratio*100}%`);
+        }
+        document.getElementById('resolutionVal').textContent=s.resolution+' µm';
+        document.getElementById('noiseVal').textContent=s.noise+' / 85';
+        document.getElementById('contrastVal').textContent=s.contrast+'%';
+        document.getElementById('depthVal').textContent=Number(s.depth).toFixed(1)+' mm';
+        document.querySelectorAll('.scenario').forEach(button=>{
+          const active=button.dataset.preset===s.preset;button.classList.toggle('active',active);button.setAttribute('aria-pressed',active?'true':'false');
+        });
+      }
+      function updateMission(){
+        const status=document.getElementById('missionStatus'),bar=document.getElementById('missionProgress');
+        if(!mission){status.textContent='按下「載入挑戰」開始實驗。';status.classList.remove('done');bar.style.width='0%';return;}
+        const sharp=s.resolution<=60,quiet=s.noise<=25,correct=s.preset==='thin';
+        const count=Number(sharp)+Number(quiet);
+        bar.style.width=(correct?count/2*100:0)+'%';
+        status.classList.toggle('done',correct&&sharp&&quiet);
+        if(!correct){status.textContent='請回到「相近薄層」樣本，繼續挑戰。';return;}
+        if(sharp&&quiet){status.textContent='✓ 挑戰成功！你已改善解析度並降低雜訊，觀察 B-scan 和 A-scan 的差異。';return;}
+        const todo=[];if(!sharp)todo.push('解析度降到 60 µm 以下');if(!quiet)todo.push('雜訊降到 25 以下');
+        status.textContent='還差 '+todo.join('、')+'。';
+      }
+      function paint(rebuild){if(rebuild)drawRaster();drawB();drawA();updateReadout();updateMission();}
+      function scheduleRebuild(){if(renderQueued)return;renderQueued=true;requestAnimationFrame(()=>{renderQueued=false;paint(true);});}
+      function selectPreset(key){if(!presetDefs[key])return;s.preset=key;syncControls();scheduleRebuild();}
+      function startMission(){stopScan();mission=true;s.preset='thin';s.resolution=165;s.noise=64;s.contrast=100;s.depth=3;s.xpos=.50;syncControls();scheduleRebuild();document.getElementById('mission-title').scrollIntoView({behavior:'smooth',block:'center'});}
+      function reset(){stopScan();mission=false;s={...defaults};syncControls();scheduleRebuild();baselineSaved=false;document.getElementById('baseline').style.display='none';document.getElementById('compareEmpty').style.display='block';document.getElementById('compareMeta').textContent='尚未保存基準影像';}
+      function capture(){if(!baselineSaved)baselineSaved=true;baselineContext.clearRect(0,0,baselineCanvas.width,baselineCanvas.height);baselineContext.drawImage(bCanvas,0,0);baselineCanvas.style.display='block';document.getElementById('compareEmpty').style.display='none';document.getElementById('compareMeta').textContent=`基準：${presetDefs[s.preset].label}｜解析度 ${s.resolution} µm｜雜訊 ${s.noise}｜對比 ${s.contrast}%`;}
+      function stopScan(){playing=false;cancelAnimationFrame(raf);document.getElementById('playBtn').textContent='▶ 自動掃描';document.getElementById('playBtn').setAttribute('aria-pressed','false');}
+      function scanFrame(t){if(!playing)return;if(t-lastFrame>34){s.xpos=(s.xpos+.004)%1;paint(false);lastFrame=t;}raf=requestAnimationFrame(scanFrame);}
+      function toggleScan(){if(playing){stopScan();return;}playing=true;lastFrame=0;document.getElementById('playBtn').textContent='Ⅱ 暫停掃描';document.getElementById('playBtn').setAttribute('aria-pressed','true');raf=requestAnimationFrame(scanFrame);}
+      function downloadPNG(){
+        const c=document.createElement('canvas');c.width=1400;c.height=870;const ctx=c.getContext('2d');
+        ctx.fillStyle='#0b1221';ctx.fillRect(0,0,c.width,c.height);ctx.fillStyle='#edf5fb';ctx.font='bold 32px system-ui';ctx.fillText('OCT Visual Lab  /  看不見的深度',50,62);
+        ctx.fillStyle='#a7b8c9';ctx.font='17px system-ui';ctx.fillText(`樣本：${presetDefs[s.preset].label}　·　解析度：${s.resolution} µm　·　雜訊：${s.noise}　·　對比度：${s.contrast}%`,50,102);
+        ctx.fillStyle='#172338';ctx.fillRect(45,130,1310,449);ctx.drawImage(bCanvas,65,147,1270,410);
+        ctx.fillStyle='#172338';ctx.fillRect(45,601,690,211);ctx.drawImage(aCanvas,60,605,670,198);
+        ctx.fillStyle='#b9cadb';ctx.font='18px system-ui';ctx.fillText('Synthetic image · Educational concept demo · Not medical data',766,676);ctx.font='14px system-ui';ctx.fillText('Single HTML / Offline simulation',766,709);
+        ctx.fillText('圖像與訊號皆由瀏覽器產生，不代表真實 OCT 量測。',766,743);
+        c.toBlob(blob=>{if(!blob){alert('匯出失敗，請再試一次。');return;}const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='oct-visual-lab.png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),5000);},'image/png');
+      }
+      document.querySelectorAll('.scenario').forEach(button=>button.addEventListener('click',()=>selectPreset(button.dataset.preset)));
+      for(const k of ['resolution','noise','contrast','depth'])els[k].addEventListener('input',e=>{s[k]=Number(e.currentTarget.value);syncControls();scheduleRebuild();});
+      function pickX(clientX){const rect=bCanvas.getBoundingClientRect(),px=(clientX-rect.left)/rect.width*bCanvas.width;s.xpos=clamp((px-cfg.left)/PW,0,1);paint(false);}
+      bCanvas.addEventListener('click',e=>{stopScan();pickX(e.clientX)});
+      bCanvas.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();stopScan();s.xpos=clamp(s.xpos+(e.key==='ArrowRight'?.025:-.025),0,1);paint(false);}});
+      document.getElementById('resetBtn').addEventListener('click',reset);
+      document.getElementById('captureBtn').addEventListener('click',capture);
+      document.getElementById('playBtn').addEventListener('click',toggleScan);
+      document.getElementById('exportBtn').addEventListener('click',downloadPNG);
+      document.getElementById('missionBtn').addEventListener('click',startMission);
+      document.getElementById('heroMission').addEventListener('click',startMission);
+      document.getElementById('heroIntro').addEventListener('click',()=>document.getElementById('intro').scrollIntoView({behavior:'smooth'}));
+
+      // LOCAL IMAGE LAB: image files never leave this page; no file upload request is made.
+      const up = {src:null,processed:null,w:0,h:0,x:.5,brightness:0,contrast:100,smooth:0,invert:false,request:0,mode:'side',divider:.5,roi:null};
+      const upOriginal = document.getElementById('uplOriginal');
+      const upProcessed = document.getElementById('uplProcessed');
+      const upProfile = document.getElementById('uplProfile');
+      const upOriginalCtx=upOriginal.getContext('2d');
+      const upProcessedCtx=upProcessed.getContext('2d');
+      const upProfileCtx=upProfile.getContext('2d');
+      const upSource=document.createElement('canvas');
+      const upSourceCtx=upSource.getContext('2d',{willReadFrequently:true});
+      const upBuffer=document.createElement('canvas');
+      const upBufferCtx=upBuffer.getContext('2d');
+      const upMessage=document.getElementById('uplMessage');
+      const upFile=document.getElementById('uplFile');
+      const upDrop=document.getElementById('uplDrop');
+      const upSettings=document.getElementById('uplSettings');
+      function upGeometry(){const w=Math.round(up.w*Math.min(520/up.w,300/up.h)),h=Math.round(up.h*Math.min(520/up.w,300/up.h));return {x:Math.floor((520-w)/2),y:Math.floor((300-h)/2),w,h};}
+      function upEmpty(ctx,w,h,text){ctx.clearRect(0,0,w,h);ctx.fillStyle='#081321';ctx.fillRect(0,0,w,h);ctx.fillStyle='#668ba5';ctx.font='14px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(text,w/2,h/2);ctx.textAlign='start';ctx.textBaseline='alphabetic';}
+      function resetUploadControls(){up.contrast=100;up.brightness=0;up.smooth=0;up.invert=false;document.getElementById('uplContrast').value='100';document.getElementById('uplBrightness').value='0';document.getElementById('uplSmooth').value='0';document.getElementById('uplInvert').checked=false;syncUploadControls();}
+      function syncUploadControls(){document.getElementById('uplContrastVal').textContent=up.contrast+'%';document.getElementById('uplBrightnessVal').textContent=(up.brightness>0?'+':'')+up.brightness;document.getElementById('uplSmoothVal').textContent=up.smooth;for(const id of ['uplContrast','uplBrightness','uplSmooth']){const e=document.getElementById(id);e.style.setProperty('--fill',(100*(Number(e.value)-Number(e.min))/(Number(e.max)-Number(e.min)))+'%');}}
+      function resetUpload(){up.mode='side';up.divider=.5;up.roi=null;setUploadMode('side');up.request++;up.src=null;up.processed=null;up.w=0;up.h=0;up.x=.5;upSettings.disabled=true;document.getElementById('uplDownload').disabled=true;upFile.value='';resetUploadControls();document.querySelectorAll('.tool-tab:not([data-mode=side])').forEach(b=>b.disabled=true);upMessage.textContent='尚未上傳圖片。所有分析都只在目前瀏覽器中執行。';document.getElementById('uplProfileText').textContent='上傳圖片後，點選右上方的處理後影像，即可查看該位置由上到下的像素強度曲線。';upEmpty(upOriginalCtx,520,300,'尚未載入圖片');upEmpty(upProcessedCtx,520,300,'等待圖片處理');upEmpty(upProfileCtx,560,220,'等待灰階強度資料');upEmpty(compCtx,820,410,'等待載入圖片');upEmpty(roiCtx,820,410,'等待載入圖片');upEmpty(histCtx,820,220,'等待灰階統計資料');resetRoiReadout();}
+      function upError(message){upMessage.textContent=message;}
+      function loadUpload(file){
+        if(!file)return;
+        if(!['image/png','image/jpeg','image/webp'].includes(file.type)){upError('不支援此檔案格式。請選擇 PNG / JPG / WebP 圖片。');return;}
+        if(file.size<1||file.size>12*1024*1024){upError('圖片需小於 12 MB 且不可為空白檔案。');return;}
+        const request=++up.request;
+        const objectURL=URL.createObjectURL(file);
+        const image=new Image();
+        image.onload=()=>{
+          URL.revokeObjectURL(objectURL);
+          if(request!==up.request)return;
+          const w=image.naturalWidth,h=image.naturalHeight;
+          if(w<1||h<1||w>8192||h>8192||w*h>32000000){upError('圖片尺寸過大或不正確。請使用小於 8192 × 8192，總像素少於 3200 萬的圖片。');return;}
+          const scale=Math.min(520/w,300/h,1);up.w=Math.max(1,Math.round(w*scale));up.h=Math.max(1,Math.round(h*scale));up.x=.5;
+          upSource.width=upBuffer.width=up.w;upSource.height=upBuffer.height=up.h;
+          upSourceCtx.clearRect(0,0,up.w,up.h);upSourceCtx.fillStyle='#000';upSourceCtx.fillRect(0,0,up.w,up.h);upSourceCtx.drawImage(image,0,0,up.w,up.h);
+          up.src=upSourceCtx.getImageData(0,0,up.w,up.h);
+          up.roi=null;up.divider=.5;resetUploadControls();upSettings.disabled=false;document.getElementById('uplDownload').disabled=false;document.querySelectorAll('.tool-tab').forEach(b=>b.disabled=false);
+          upMessage.textContent='已載入：'+file.name+'（原始 '+w+' × '+h+' px；瀏覽器預覽 '+up.w+' × '+up.h+' px）';
+          processUpload();
+        };
+        image.onerror=()=>{URL.revokeObjectURL(objectURL);if(request===up.request)upError('無法讀取圖片，請更換檔案再試一次。');};
+        image.src=objectURL;
+      }
+      function processUpload(){
+        if(!up.src)return;
+        const n=up.w*up.h,orig=up.src.data;let gray=new Float32Array(n);
+        for(let i=0;i<n;i++){
+          let v=.2126*orig[i*4]+.7152*orig[i*4+1]+.0722*orig[i*4+2];
+          v=clamp((v-127.5)*up.contrast/100+127.5+up.brightness,0,255);
+          gray[i]=up.invert?255-v:v;
+        }
+        // Separable box blur; a deliberately simple *spatial* smoothing demonstration.
+        if(up.smooth>0){const r=up.smooth,tmp=new Float32Array(n),out=new Float32Array(n);for(let y=0;y<up.h;y++)for(let x=0;x<up.w;x++){let sum=0,count=0;for(let dx=-r;dx<=r;dx++){const xx=x+dx;if(xx>=0&&xx<up.w){sum+=gray[y*up.w+xx];count++;}}tmp[y*up.w+x]=sum/count;}for(let y=0;y<up.h;y++)for(let x=0;x<up.w;x++){let sum=0,count=0;for(let dy=-r;dy<=r;dy++){const yy=y+dy;if(yy>=0&&yy<up.h){sum+=tmp[yy*up.w+x];count++;}}out[y*up.w+x]=sum/count;}gray=out;}
+        const imageData=upBufferCtx.createImageData(up.w,up.h);
+        for(let i=0;i<n;i++){const c=Math.round(gray[i]);const j=i*4;imageData.data[j]=imageData.data[j+1]=imageData.data[j+2]=c;imageData.data[j+3]=255;}
+        upBufferCtx.putImageData(imageData,0,0);up.processed=imageData;drawUploadImages();drawUploadProfile();drawComparison();drawRoi();drawHistogram();
+      }
+      function drawUploadImages(){
+        if(!up.src)return;
+        const g=upGeometry();for(const ctx of [upOriginalCtx,upProcessedCtx]){ctx.clearRect(0,0,520,300);ctx.fillStyle='#081321';ctx.fillRect(0,0,520,300);}
+        upOriginalCtx.drawImage(upSource,g.x,g.y,g.w,g.h);upProcessedCtx.drawImage(upBuffer,g.x,g.y,g.w,g.h);
+        const cx=g.x+g.w*up.x;
+        upProcessedCtx.save();upProcessedCtx.strokeStyle='#48e2d0';upProcessedCtx.lineWidth=1.5;upProcessedCtx.shadowColor='#48e2d0';upProcessedCtx.shadowBlur=9;upProcessedCtx.beginPath();upProcessedCtx.moveTo(cx,g.y);upProcessedCtx.lineTo(cx,g.y+g.h);upProcessedCtx.stroke();upProcessedCtx.restore();
+      }
+      function drawUploadProfile(){
+        if(!up.processed)return;
+        const ctx=upProfileCtx,W=560,H=220,plot={l:51,t:22,r:22,b:37},pw=W-73,ph=H-59;
+        ctx.clearRect(0,0,W,H);ctx.fillStyle='#081321';ctx.fillRect(0,0,W,H);ctx.font='11px system-ui';
+        for(let t=0;t<=4;t++){let py=plot.t+ph*t/4,px=plot.l+pw*t/4;ctx.strokeStyle='#254052';ctx.beginPath();ctx.moveTo(plot.l,py);ctx.lineTo(plot.l+pw,py);ctx.moveTo(px,plot.t);ctx.lineTo(px,plot.t+ph);ctx.stroke();ctx.fillStyle='#94afc3';ctx.textAlign='right';ctx.fillText(t*25+'%',plot.l-10,py+4);ctx.textAlign='center';ctx.fillText(Math.round(t*255/4),px,H-15);}
+        ctx.fillStyle='#bbd7e1';ctx.textAlign='center';ctx.fillText('灰階強度 (0–255)',plot.l+pw/2,H-2);
+        const xi=Math.min(up.w-1,Math.max(0,Math.floor(up.x*(up.w-1))));ctx.strokeStyle='#48e2d0';ctx.lineWidth=2;ctx.beginPath();let sum=0;
+        for(let yy=0;yy<up.h;yy++){let val=up.processed.data[(yy*up.w+xi)*4];sum+=val;const px=plot.l+val/255*pw,py=plot.t+yy/Math.max(1,up.h-1)*ph;if(yy===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);}
+        ctx.stroke();document.getElementById('uplProfileText').textContent=`橫向選取位置：${Math.round(up.x*100)}%　｜　平均灰階值：${(sum/up.h).toFixed(1)} / 255。這是圖片像素值，不是 OCT 量測深度。`;
+      }
+      function pickUploadX(clientX){if(!up.src)return;const rect=upProcessed.getBoundingClientRect(),px=(clientX-rect.left)/rect.width*520,g=upGeometry();up.x=clamp((px-g.x)/g.w,0,1);drawUploadImages();drawUploadProfile();}
+      function downloadUpload(){if(!up.processed)return;upBuffer.toBlob(blob=>{if(!blob){upError('匯出失敗，請再試一次。');return;}const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='oct-visual-lab-processed.png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),5000);},'image/png');}
+      upDrop.addEventListener('click',()=>upFile.click());upDrop.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();upFile.click();}});
+      upDrop.addEventListener('dragover',e=>{e.preventDefault();upDrop.classList.add('is-drag');});upDrop.addEventListener('dragleave',e=>{e.preventDefault();upDrop.classList.remove('is-drag');});upDrop.addEventListener('drop',e=>{e.preventDefault();upDrop.classList.remove('is-drag');loadUpload(e.dataTransfer.files[0]);});
+      upFile.addEventListener('change',e=>loadUpload(e.target.files[0]));
+      document.getElementById('uplClear').addEventListener('click',resetUpload);
+      document.getElementById('uplDownload').addEventListener('click',downloadUpload);
+      for(const key of ['Contrast','Brightness','Smooth'])document.getElementById('upl'+key).addEventListener('input',e=>{up[key.toLowerCase()]=Number(e.currentTarget.value);syncUploadControls();processUpload();});
+      document.getElementById('uplInvert').addEventListener('change',e=>{up.invert=e.currentTarget.checked;processUpload();});
+      upProcessed.addEventListener('click',e=>pickUploadX(e.clientX));
+      upProcessed.addEventListener('keydown',e=>{if(!up.src)return;if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();up.x=clamp(up.x+(e.key==='ArrowRight'?.025:-.025),0,1);drawUploadImages();drawUploadProfile();}});
+
+      // V3 -- Image comparison and ROI are separate panes, keeping the UI readable.
+      const compCanvas=document.getElementById('uplComparison'),compCtx=compCanvas.getContext('2d');
+      const roiCanvas=document.getElementById('uplRoiCanvas'),roiCtx=roiCanvas.getContext('2d');
+      const histCanvas=document.getElementById('uplHist'),histCtx=histCanvas.getContext('2d');
+      let roiDrag=null;
+      function setUploadMode(mode){
+        up.mode=mode;
+        for(const b of document.querySelectorAll('.tool-tab'))b.setAttribute('aria-pressed',String(b.dataset.mode===mode));
+        for(const [key,id] of [['side','uplPaneSide'],['compare','uplPaneCompare'],['roi','uplPaneRoi']])document.getElementById(id).hidden=key!==mode;
+        if(up.src){if(mode==='compare')drawComparison();if(mode==='roi'){drawRoi();drawHistogram();}}
+      }
+      function fitInCanvas(W,H){
+        const margin=24, scale=Math.min((W-margin*2)/up.w,(H-margin*2)/up.h);
+        const w=up.w*scale,h=up.h*scale;
+        return {x:(W-w)/2,y:(H-h)/2,w,h};
+      }
+      function drawComparison(){
+        if(!up.src){upEmpty(compCtx,820,410,'等待載入圖片');return;}
+        const c=compCtx,W=820,H=410,g=fitInCanvas(W,H),div=g.x+g.w*up.divider;
+        c.fillStyle='#081321';c.fillRect(0,0,W,H);
+        c.drawImage(upSource,g.x,g.y,g.w,g.h);
+        c.save();c.beginPath();c.rect(div,g.y,g.x+g.w-div,g.h);c.clip();c.drawImage(upBuffer,g.x,g.y,g.w,g.h);c.restore();
+        c.strokeStyle='#8effee';c.lineWidth=3;c.beginPath();c.moveTo(div,g.y);c.lineTo(div,g.y+g.h);c.stroke();
+        c.fillStyle='#a6ffed';c.fillRect(div-20,g.y+g.h/2-19,40,38);
+        c.font='bold 20px system-ui';c.fillStyle='#173139';c.textAlign='center';c.fillText('↔',div,g.y+g.h/2+7);
+        for(const [text,x,align] of [['原圖',g.x+12,'left'],['處理後',g.x+g.w-12,'right']]){
+          c.textAlign=align;c.fillStyle='#ffffffdd';c.font='bold 16px system-ui';c.fillText(text,x,g.y+27);
+        }
+        document.getElementById('uplCompareNote').textContent=`分界線位置：${Math.round(up.divider*100)}%｜左側原圖、右側處理後；可拖曳或使用方向鍵。`;
+      }
+      function moveComparison(clientX){
+        if(!up.src)return;const rect=compCanvas.getBoundingClientRect();
+        const x=(clientX-rect.left)/rect.width*compCanvas.width,g=fitInCanvas(820,410);
+        up.divider=clamp((x-g.x)/g.w,0,1);drawComparison();
+      }
+      function pointerToRoi(e){
+        const bounds=roiCanvas.getBoundingClientRect(),g=fitInCanvas(820,410);
+        const x=(e.clientX-bounds.left)/bounds.width*820,y=(e.clientY-bounds.top)/bounds.height*410;
+        return {x:clamp(Math.round((x-g.x)/g.w*up.w),0,up.w),y:clamp(Math.round((y-g.y)/g.h*up.h),0,up.h)};
+      }
+      function roiBox(){
+        const r=up.roi;if(!r)return {x0:0,y0:0,x1:up.w,y1:up.h};
+        const x0=clamp(Math.min(r.x0,r.x1),0,up.w),x1=clamp(Math.max(r.x0,r.x1),0,up.w);
+        const y0=clamp(Math.min(r.y0,r.y1),0,up.h),y1=clamp(Math.max(r.y0,r.y1),0,up.h);
+        return (x1-x0>=2&&y1-y0>=2)?{x0,y0,x1,y1}:{x0:0,y0:0,x1:up.w,y1:up.h};
+      }
+      function drawRoi(){
+        if(!up.src){upEmpty(roiCtx,820,410,'等待載入圖片');return;}
+        const c=roiCtx,g=fitInCanvas(820,410),r=up.roi;
+        c.fillStyle='#081321';c.fillRect(0,0,820,410);c.drawImage(upBuffer,g.x,g.y,g.w,g.h);
+        if(r){
+          const b=roiBox(),x=g.x+b.x0/up.w*g.w,y=g.y+b.y0/up.h*g.h,w=(b.x1-b.x0)/up.w*g.w,h=(b.y1-b.y0)/up.h*g.h;
+          c.fillStyle='#45e7d015';c.fillRect(x,y,w,h);c.strokeStyle='#6bf1dd';c.lineWidth=2.5;c.setLineDash([8,4]);c.strokeRect(x,y,w,h);c.setLineDash([]);
+          c.fillStyle='#112f37dd';c.fillRect(x,Math.max(g.y,y-24),Math.min(160,w+40),24);
+          c.fillStyle='#b7fff5';c.font='bold 13px system-ui';c.fillText('ROI '+(b.x1-b.x0)+'×'+(b.y1-b.y0),x+5,Math.max(g.y,y-24)+17);
+        }else{
+          c.fillStyle='#d6fff0';c.font='bold 15px system-ui';c.fillText('全圖分析 · 拖曳框選 ROI',g.x+12,g.y+24);
+        }
+      }
+      function resetRoiReadout(){
+        for(const id of ['uplMean','uplStd','uplMinMax','uplCount'])document.getElementById(id).textContent='--';
+        document.getElementById('uplRoiNote').textContent='尚未載入圖片。上傳後可框選局部，或分析全圖。';
+      }
+      function drawHistogram(){
+        if(!up.processed){upEmpty(histCtx,820,220,'等待灰階統計資料');resetRoiReadout();return;}
+        const r=roiBox(),counts=new Uint32Array(64),w=up.w,img=up.processed.data;
+        let sum=0,sumSq=0,min=255,max=0,n=0;
+        for(let y=r.y0;y<r.y1;y++)for(let x=r.x0;x<r.x1;x++){
+          const v=img[(y*w+x)*4];counts[Math.min(63,v>>2)]++;sum+=v;sumSq+=v*v;
+          min=Math.min(min,v);max=Math.max(max,v);n++;
+        }
+        const mean=sum/n,variance=Math.max(0,sumSq/n-mean*mean),std=Math.sqrt(variance);
+        document.getElementById('uplMean').textContent=mean.toFixed(1);
+        document.getElementById('uplStd').textContent=std.toFixed(1);
+        document.getElementById('uplMinMax').textContent=min+' / '+max;
+        document.getElementById('uplCount').textContent=n.toLocaleString('en-US');
+        document.getElementById('uplRoiNote').textContent=up.roi?`ROI 大小：${r.x1-r.x0} × ${r.y1-r.y0} 預覽像素；使用拖曳可重新選取。`:`目前分析全圖：${up.w} × ${up.h} 預覽像素（不是原始解析度）；拖曳圖片可選取局部。`;
+        const ctx=histCtx,W=820,H=220,plot={l:45,r:20,t:18,b:39},pw=W-65,ph=H-57;
+        ctx.fillStyle='#081321';ctx.fillRect(0,0,W,H);
+        const peak=Math.max(...counts,1);
+        for(let i=0;i<=4;i++){
+          let y=plot.t+i*ph/4;ctx.strokeStyle='#2b4658';ctx.beginPath();ctx.moveTo(plot.l,y);ctx.lineTo(plot.l+pw,y);ctx.stroke();
+          ctx.font='11px system-ui';ctx.fillStyle='#9bb4c5';ctx.textAlign='right';ctx.fillText((peak*(1-i/4)/n*100).toFixed(1)+'%',plot.l-6,y+4);
+          ctx.textAlign='center';ctx.fillText(Math.round(i*255/4),plot.l+i*pw/4,H-15);
+        }
+        for(let i=0;i<64;i++){
+          const height=counts[i]/peak*ph,bw=pw/64,x=plot.l+i*bw;
+          ctx.fillStyle='#43d6c8';ctx.fillRect(x,plot.t+ph-height,Math.max(1,bw-1),height);
+        }
+        ctx.textAlign='right';ctx.fillStyle='#bcd0df';ctx.font='12px system-ui';ctx.fillText('灰階 0–255',W-19,H-4);
+      }
+      function clearRoi(){up.roi=null;drawRoi();drawHistogram();}
+      compCanvas.addEventListener('pointerdown',e=>{if(!up.src)return;compCanvas.setPointerCapture(e.pointerId);moveComparison(e.clientX);});
+      compCanvas.addEventListener('pointermove',e=>{if(compCanvas.hasPointerCapture(e.pointerId))moveComparison(e.clientX);});
+      compCanvas.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();up.divider=clamp(up.divider+(e.key==='ArrowRight'?.025:-.025),0,1);drawComparison();}});
+      roiCanvas.addEventListener('pointerdown',e=>{if(!up.src)return;roiCanvas.setPointerCapture(e.pointerId);roiDrag=pointerToRoi(e);up.roi={x0:roiDrag.x,y0:roiDrag.y,x1:roiDrag.x+2,y1:roiDrag.y+2};drawRoi();});
+      roiCanvas.addEventListener('pointermove',e=>{if(!roiDrag||!roiCanvas.hasPointerCapture(e.pointerId))return;const pos=pointerToRoi(e);up.roi.x1=pos.x;up.roi.y1=pos.y;drawRoi();});
+      function endRoi(e){if(!roiDrag)return;const pos=pointerToRoi(e);up.roi.x1=pos.x;up.roi.y1=pos.y;if(Math.abs(pos.x-roiDrag.x)<3||Math.abs(pos.y-roiDrag.y)<3)up.roi=null;roiDrag=null;drawRoi();drawHistogram();}
+      roiCanvas.addEventListener('pointerup',endRoi);
+      roiCanvas.addEventListener('pointercancel',()=>{roiDrag=null;drawRoi();drawHistogram();});
+      roiCanvas.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();clearRoi();}});
+      document.getElementById('uplRoiClear').addEventListener('click',clearRoi);
+      document.querySelectorAll('.tool-tab').forEach(button=>button.addEventListener('click',()=>{if(!button.disabled)setUploadMode(button.dataset.mode);}));
+      // All-demo content is synthetic; the same local processing pipeline is used.
+      document.getElementById('uplDemo').addEventListener('click',()=>{
+        const c=document.createElement('canvas');c.width=660;c.height=360;
+        const ctx=c.getContext('2d'),im=ctx.createImageData(c.width,c.height);
+        for(let y=0;y<c.height;y++)for(let x=0;x<c.width;x++){
+          const wav=Math.sin(x*.018),h1=70+10*wav,h2=170+13*Math.sin(x*.015+.5),h3=228+6*Math.cos(x*.01);
+          const noise=hash(x,y)*31,layer=(a,b,amp,sig)=>amp*Math.exp(-.5*((y-(a+b)) /sig)**2);
+          const val=clamp(13+noise+layer(h1,0,200,4)+layer(h2,0,155,7)+layer(h3,0,120,5),0,255);
+          const i=(y*c.width+x)*4;im.data[i]=im.data[i+1]=im.data[i+2]=val;im.data[i+3]=255;
+        }
+        ctx.putImageData(im,0,0);
+        c.toBlob(blob=>{if(blob)loadUpload(new File([blob],'synthetic-example.png',{type:'image/png'}));else upError('無法產生示範影像。');},'image/png');
+      });
+
+      document.getElementById('heroUpload').addEventListener('click',()=>document.getElementById('uploadLab').scrollIntoView({behavior:'smooth'}));
+      resetUpload();
+      syncControls();paint(true);
+    })();
+  </script>
+</body>
+</html>
